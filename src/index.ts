@@ -69,14 +69,6 @@ app.delete("/api/links/:id", (req: Request, res: Response) => {
   res.json({ message: "삭제 완료", id });
 });
 
-// 정적 파일 제공
-const staticPath = path.resolve(__dirname, "../../dist");
-app.use(express.static(staticPath));
-
-app.get("*", (req: Request, res: Response) => {
-  res.sendFile(path.join(staticPath, "index.html"));
-});
-
 app.listen(PORT, () => {
   console.log(`✅ 서버 실행 중: http://localhost:${PORT}`);
 });
