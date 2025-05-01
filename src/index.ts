@@ -8,6 +8,14 @@ import path from "path";
 const app = express();
 const PORT = 3001;
 
+// CORS 설정 추가
+app.use(
+  cors({
+    origin: "http://localhost:5173", // React 프론트가 동작하는 URL
+    methods: ["GET", "POST", "DELETE"], // 허용할 HTTP 메서드
+  })
+);
+
 // __dirname 설정
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
