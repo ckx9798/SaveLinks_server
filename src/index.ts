@@ -1,19 +1,24 @@
 import express, { Request, Response } from "express";
 
 import cors from "cors";
+import { fileURLToPath } from "url";
 import fs from "fs";
 import path from "path";
 
 const app = express();
 const PORT = 3001;
 
-// CORS 설정
+// CORS 설정 추가
 app.use(
   cors({
     origin: "http://localhost:5173", // React 프론트가 동작하는 URL
     methods: ["GET", "POST", "DELETE"], // 허용할 HTTP 메서드
   })
 );
+
+// __dirname 설정
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // JSON 파일 경로
 const dataPath = path.resolve(__dirname, "../data.json");
@@ -64,7 +69,14 @@ app.delete("/api/links/:id", (req: Request, res: Response) => {
   res.json({ message: "삭제 완료", id });
 });
 
-// 서버 실행
+// 정적 파일 제공
+const staticPath = path.resolve(__dirname, "../../dist");
+app.use(express.static(staticPath));
+
+app.get("*", (req: Request, res: Response) => {
+  res.sendFile(path.join(staticPath, "index.html"));
+});
+
 app.listen(PORT, () => {
   console.log(`✅ 서버 실행 중: http://localhost:${PORT}`);
 });
